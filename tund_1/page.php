@@ -9,8 +9,16 @@
 	if ($hourNow < 10) {
 		$partOfDay = "Hommik";
 	}
-	elseif ($hourNow >= 10 and $hourNow < 18) {
+	elseif ($hourNow >= 10 and $hourNow < 24) {
 		$partOfDay = "aeg aktiivselt tegutseda";
+		$background = '"hommik"';
+	}
+
+	// Kodune ülesanne 2: muuda taustavärvi kellaajasuhtes
+	if ($hourNow > 5 and $hourNow < 11) {
+		$background = '"hommik"';
+	} else {
+		$background = '"ohtu"';
 	}
 
 	$partOfDayHTML = "<p>Käes on " .$partOfDay . "!</p>";
@@ -35,6 +43,7 @@
 	$photoTypesAllowed = ["image/jpeg", "image/png"];
 	$allFiles = array_slice(scandir($imgDir), 2);
 	$photoList = [];
+	$photonum_2 = [];
 
 	// Lisan piltide kaustast pildid listi tsükkli abil
 	foreach($allFiles as $file) {
@@ -48,6 +57,15 @@
 	$photoCount = count($photoList);
 	$photonum = mt_rand(0, $photoCount - 1);
 	$randomImageHtml = '<img src="' .$imgDir .$photoList[$photonum] .'" alt="juhuslik pilt">' ."\n";
+	$randomImageHtml2 = '<img src="' .$imgDir .$photoList[$photonum] .'" alt="juhuslik pilt">' ."\n";
+
+	for ($x = 0;$x <= 6;$x++) {
+		$photonum = mt_rand(0, $photoCount - 1);
+		echo $photonum;
+		if (in_array($photonum, $photonum_2) == false) {
+			array_push($photonum_2, $photonum);
+		}
+	}
 ?>
 
 <!DOCTYPE html>
@@ -55,17 +73,38 @@
 <head>
 	<meta charset="utf-8">
 	<title>Veebirakendused ja nende loomine 2020</title>
+
+	<style>
+		.hommik {
+			background-color: blue;
+			font-size: 16px;
+			color: pink;
+		}
+
+		.ohtu {
+			background-color: red;
+			font-size: 20px;
+			color: blue;
+		}
+	</style>
+
+
 </head>
-<body>
+<body class=<?php echo $background; ?>>
 	<h1><?php echo $myName; ?></h1>
 	<p>See leht on valminud õppetöö raames!</p>
 	<?php 
 		echo $timeHtml;
 		echo $partOfDayHTML;
-		var_dump($semesterDuration);
+		// var_dump($semesterDuration);
 		echo $semesterProgressHtml;
-		var_dump($allFiles);
+		// var_dump($allFiles);
 		echo $randomImageHtml;
+		echo $randomImageHtml2;
+	?>
+	<br>
+	<?php
+		echo $photonum_2[1];
 	?>
 </body>
 </html>
