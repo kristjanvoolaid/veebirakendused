@@ -69,23 +69,6 @@
 	$photonum = mt_rand(0, $photoCount - 1);
 	$randomImageHtml = '<img src="' .$imgDir .$photoList[$photonum] .'" alt="juhuslik pilt">' ."\n";
 	$randomImageHtml2 = '<img src="' .$imgDir .$photoList[$photonum] .'" alt="juhuslik pilt">' ."\n";
-
-	// Kodune ülesanne number 1:
-	// Tegin listi $photonum_2 random numbrite jaoks. Tsükklis loosin random numbri, kontrollin kas see on olemas olevas listis,
-	// kui ei, siis lisan numbri listi
-	// $photonum_2 = [];
-	// for ($x = 0;$x <= 2;$x++) {
-	// 	do {
-	// 		$photonum = mt_rand(0, $photoCount - 1);
-	// 	} while (in_array($photonum, $photonum_2) == true); {
-	// 		array_push($photonum_2, $photonum);
-	// 	}
-	// 	$y = $photonum_2[$x];
-	// 		$randomImageHtml = '<img src="' .$imgDir .$photoList[$y] .'" alt="juhuslik pilt">' ."\n";
-	// 		echo $randomImageHtml;
-
-	// }		
-
 ?>
 
 <!DOCTYPE html>
