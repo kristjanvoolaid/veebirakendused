@@ -9,14 +9,15 @@
 	if ($hourNow < 10) {
 		$partOfDay = "Hommik";
 	}
-	elseif ($hourNow >= 10 and $hourNow < 24) {
+	elseif ($hourNow >= 10 and $hourNow < 20) {
 		$partOfDay = "aeg aktiivselt tegutseda";
-		$background = '"hommik"';
 	}
 
 	// Kodune ülesanne 2: muuda taustavärvi kellaajasuhtes
-	if ($hourNow > 5 and $hourNow < 11) {
+	if ($hourNow >= 5 and $hourNow <= 11) {
 		$background = '"hommik"';
+	} elseif ($hourNow > 11 and $hourNow <= 16) {
+		$background = '"louna"';
 	} else {
 		$background = '"ohtu"';
 	}
@@ -38,12 +39,22 @@
 	$semesterProgressHtml .= $fromSemesterStart->format("%r%a");
 	$semesterProgressHtml .='" </meter></p>'."\n";
 
+	// Kodune ülesanne 3: Semestri kulgemine. Testimiseks tuleks muuta $semesterStart kuupäeva tänasest päevast hilisemaks
+	if ($today < $semesterStart) {
+		$semesterProgressHtml = '<p>Semester pole alanud!</p>';
+	} else {
+		$semesterProgressHtml = '<p>Semester on hoos: <meter min="0" max="';
+		$semesterProgressHtml .=$semesterDuration->format("%r%a");
+		$semesterProgressHtml .='" value="';
+		$semesterProgressHtml .= $fromSemesterStart->format("%r%a");
+		$semesterProgressHtml .='" </meter></p>'."\n";
+	}
+
 	//loen etteantud kataloogist pildi failid
 	$imgDir = "../../img/";
 	$photoTypesAllowed = ["image/jpeg", "image/png"];
 	$allFiles = array_slice(scandir($imgDir), 2);
 	$photoList = [];
-	$photonum_2 = [];
 
 	// Lisan piltide kaustast pildid listi tsükkli abil
 	foreach($allFiles as $file) {
@@ -59,13 +70,22 @@
 	$randomImageHtml = '<img src="' .$imgDir .$photoList[$photonum] .'" alt="juhuslik pilt">' ."\n";
 	$randomImageHtml2 = '<img src="' .$imgDir .$photoList[$photonum] .'" alt="juhuslik pilt">' ."\n";
 
-	for ($x = 0;$x <= 6;$x++) {
-		$photonum = mt_rand(0, $photoCount - 1);
-		echo $photonum;
-		if (in_array($photonum, $photonum_2) == false) {
-			array_push($photonum_2, $photonum);
-		}
-	}
+	// Kodune ülesanne number 1:
+	// Tegin listi $photonum_2 random numbrite jaoks. Tsükklis loosin random numbri, kontrollin kas see on olemas olevas listis,
+	// kui ei, siis lisan numbri listi
+	// $photonum_2 = [];
+	// for ($x = 0;$x <= 2;$x++) {
+	// 	do {
+	// 		$photonum = mt_rand(0, $photoCount - 1);
+	// 	} while (in_array($photonum, $photonum_2) == true); {
+	// 		array_push($photonum_2, $photonum);
+	// 	}
+	// 	$y = $photonum_2[$x];
+	// 		$randomImageHtml = '<img src="' .$imgDir .$photoList[$y] .'" alt="juhuslik pilt">' ."\n";
+	// 		echo $randomImageHtml;
+
+	// }		
+
 ?>
 
 <!DOCTYPE html>
@@ -81,13 +101,18 @@
 			color: pink;
 		}
 
+		.louna {
+			background-color: orange;
+			font-size: 18px;
+			color: green;
+		}
+
 		.ohtu {
 			background-color: red;
 			font-size: 20px;
 			color: blue;
 		}
 	</style>
-
 
 </head>
 <body class=<?php echo $background; ?>>
@@ -99,12 +124,28 @@
 		// var_dump($semesterDuration);
 		echo $semesterProgressHtml;
 		// var_dump($allFiles);
-		echo $randomImageHtml;
-		echo $randomImageHtml2;
+
+		// Kodune ülesanne number 1:
+		// Tegin listi $photonum_2 random numbrite jaoks. Tsükklis loosin random numbri, kontrollin kas see on $photonum_2 listis,
+		// kui ei, siis lisan numbri listi
+		// Pildid prindin listi indexite abil
+		$photonum_2 = [];
+		for ($x = 0;$x <= 2;$x++) {
+			do {
+				$photonum = mt_rand(0, $photoCount - 1);
+			} while (in_array($photonum, $photonum_2) == true); {
+				array_push($photonum_2, $photonum);
+			}
+			$y = $photonum_2[$x];
+				$randomImageHtml = '<img src="' .$imgDir .$photoList[$y] .'" alt="juhuslik pilt">' ."\n";
+				echo $randomImageHtml;
+
+	}	 
+
 	?>
 	<br>
 	<?php
-		echo $photonum_2[1];
+		echo (int)$photonum_2;
 	?>
 </body>
 </html>
