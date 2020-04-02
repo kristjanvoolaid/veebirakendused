@@ -52,34 +52,37 @@
 <body>
     <h1>Siin on minu Õppimise logi</h1>
     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-    <strong>Õppeaine: </strong>
-    <select name="courseType" id="">
-        <option value="" selected disapled>Vali</option>
-        <option value="1">Üld- ja sotsiaalpsühholoogia</option>
-        <option value="2">Veebirakendused ja nende loomine</option>
-        <option value="3">Programmeerimine I</option>
-        <option value="4">Disaini alused</option>
-        <option value="5">Videomängude disain</option>
-        <option value="6">Andmebaasid</option>
-        <option value="7">Sissejuhatus tarkvaraarendusse</option>
-        <option value="8">Sissejuhatus informaatikasse</option>
-    </select>
+        <strong>Õppeaine: </strong>
+        <select name="courseType" id="">
+            <option value="" selected disapled>Vali</option>
+            <option value="1">Üld- ja sotsiaalpsühholoogia</option>
+            <option value="2">Veebirakendused ja nende loomine</option>
+            <option value="3">Programmeerimine I</option>
+            <option value="4">Disaini alused</option>
+            <option value="5">Videomängude disain</option>
+            <option value="6">Andmebaasid</option>
+            <option value="7">Sissejuhatus tarkvaraarendusse</option>
+            <option value="8">Sissejuhatus informaatikasse</option>
+        </select>
 
-    <strong>Tegevus: </strong>
-    <select name="activityType" id="" value="<?php echo $activityType; ?>">
-        <option value="" selected disapled>Vali</option>
-        <option value="1">Iseseisva materjali loomine</option>
-        <option value="2">Koduste ülesannete lahendamine</option>
-        <option value="3">Kordamine</option>
-        <option value="4">Rühmatöö</option>
-    </select>
+        <strong>Tegevus: </strong>
+        <select name="activityType" id="" value="<?php echo $activityType; ?>">
+            <option value="" selected disapled>Vali</option>
+            <option value="1">Iseseisva materjali loomine</option>
+            <option value="2">Koduste ülesannete lahendamine</option>
+            <option value="3">Kordamine</option>
+            <option value="4">Rühmatöö</option>
+        </select>
 
-    <strong>Kulunud aeg: </strong>
-    <input type="number" min=".25" step=".25" name="elapsedTime" value="<?php echo $elapsedTime; ?>">
+        <strong>Kulunud aeg: </strong>
+        <input type="number" min=".25" step=".25" name="elapsedTime" value="<?php echo $elapsedTime; ?>">
 
-    <input type="submit" name="logBtn" value="Salvesta logi!">
-    <span><?php echo $logError; ?></span>
-    <br>
+        <input type="submit" name="logBtn" value="Salvesta logi!">
+        <span><?php echo $logError; ?></span>
+        <div>
+            <a href="readschoollogs.php">Vaata logisid</a>
+        </div>
+        <br>
     </form>
 </body>
 </html>

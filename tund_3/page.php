@@ -3,7 +3,7 @@
 	require("fnc_users.php");
 
 	require("classes/session.class.php");
-	SessionManager::sessionStart("vr20", 0, "/kristjan.voolaid", "tigu.hk.tlu.ee");
+	SessionManager::sessionStart("vr20", 0, "/~kristjan.voolaid", "tigu.hk.tlu.ee");
 
 	$myName = "Kristjan Voolaid";
 	$fullTimeNow = date("d.m.Y H:i:s");

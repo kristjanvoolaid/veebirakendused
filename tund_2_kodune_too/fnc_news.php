@@ -50,10 +50,10 @@
     function saveSchoolLog($courseType, $activityType, $elapsedTime) {
         $response = null;
         $conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-        
         $stmt = $conn->prepare("INSERT INTO vr20_study_log (course, activity, time) VALUES (?, ?, ?)");
         echo $conn->error;
         $stmt->bind_param("iid", $courseType, $activityType, $elapsedTime);
+        
         if($stmt->execute()) {
             $response = 1;
         } else {
@@ -67,52 +67,28 @@
     }
 
     function readSchoolLogs() {
+
         $response = null;
         $conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-        $stmt = $conn->prepare("SELECT course, activity, time FROM vr20_study_log ORDER BY id DESC");
+        $stmt = $conn->prepare("SELECT vr20_study_log.id, vr20_oppeained.id, vr20_oppeained.course, vr20_study_log.course, vr20_study_log.time, vr20_study_log.activity, vr20_oppetegevused.id, vr20_oppetegevused.oppetegevus 
+                                FROM vr20_study_log 
+                                JOIN vr20_oppeained ON vr20_study_log.course = vr20_oppeained.id 
+                                JOIN vr20_oppetegevused ON vr20_study_log.activity = vr20_oppetegevused.id
+                                ORDER BY vr20_study_log.id DESC");
+
         echo $conn->error;
-        $stmt->bind_result($courseFromDB, $activityFromDB, $timeFromDB);
+        $stmt->bind_result($idFromDB, $idCoursesFromDB, $courseNameFromDB, $courseIdFromDB, $elapsedTimeFromDB, $activityIdFromDB, $idActivityFromDB, $activityNameFromDB);
         $stmt->execute();
 
         while($stmt->fetch()) {
-           $courses = array("Test",
-                            "Üld- ja sotsiaalpsühholoogia",
-                            "Veebirakendused ja nende loomine", 
-                            "Programmeerimine I", 
-                            "Disaini alused",
-                            "Videomängude disain",
-                            "Andmebaasid",
-                            "Sissejuhatus tarkvaraarendusse",
-                            "Sissejuhatus informaatikasse",
-                        );
             
-            $activities = array("Test",
-                                "Iseseisva materjali loomine",
-                                "Koduste ülesannete lahendamine",
-                                "Kordamine",
-                                "Rühmatöö",
-
-                    );
-            
-           foreach($courses as $course => $value) {
-               if($courseFromDB == $course) {
-                   $courseFromDB = $value;
-               }
-           }
-
-           foreach($activities as $acivity => $value) {
-               if($activityFromDB == $acivity) {
-                   $activityFromDB = $value;
-               }
-           }
-
-        $response .= "<tr><td>" . $courseFromDB . "</td><td>" . $activityFromDB . "</td><td>" . $timeFromDB . " tundi</td></td>";
-        
+            $response .= "<tr><td>" . $courseNameFromDB . "</td><td>" . $activityNameFromDB . "</td><td>" . $elapsedTimeFromDB . " tundi</td></td>";
         }
+
         if($response == null) {
             echo "<p>Kahjuks andmed puuduvad!</p>";
         }
-
+       
         // Sulgen andmebaasiühenduse
         $stmt->close();
         $conn->close();

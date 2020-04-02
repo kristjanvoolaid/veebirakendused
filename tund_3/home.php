@@ -5,7 +5,7 @@
 
     // Sessiooni kasutamine
     require("classes/session.class.php");
-	SessionManager::sessionStart("vr20", 0, "/kristjan.voolaid", "tigu.hk.tlu.ee");
+	SessionManager::sessionStart("vr20", 0, "/~kristjan.voolaid", "tigu.hk.tlu.ee");
 
     // $newsHtml = readNews();
 

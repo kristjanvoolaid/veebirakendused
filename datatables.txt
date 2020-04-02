@@ -6,3 +6,6 @@ CREATE TABLE `kristjanvoolaid`.`vr20_study_log` ( `id` INT(11) NOT NULL AUTO_INC
 
 // Andmetabel kasutajate jaoks
 CREATE TABLE `kristjanvoolaid`.`vr20_users` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `firstname` VARCHAR(30) NOT NULL , `lastname` VARCHAR(30) NOT NULL , `birthdate` DATE NOT NULL , `gender` INT(1) NOT NULL , `email` VARCHAR(100) NOT NULL , `password` VARCHAR(60) NOT NULL , `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+// Andmetabel õppeainete jaoks
+CREATE TABLE `kristjanvoolaid`.`vr20_oppeained`(`id` INT NOT NULL AUTO_INCREMENT, `course` VARCHAR(255) NOT NULL, `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (`id`)) ENGINE = InnoDB;

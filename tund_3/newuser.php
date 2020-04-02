@@ -113,8 +113,8 @@
 	if(empty($nameError) and empty($surnameError) and empty($birthMonthError) and empty($birthYearError) and empty($birthDayError)and empty($birthDateError) and empty($genderError) and empty($emailError) and empty($passwordError) and empty($confirmpasswordError)){
         $notice = signUp($name, $surname, $email, $gender, $birthDate, $_POST["password"]);
         if($notice == "ok") {
-            $notice = "Uus kasutaja on loodud";
-            $notice = null;
+			$notice = "Uus kasutaja on loodud";
+            // $notice = null;
             $name = null;
             $surname = null;
             $email = null;
@@ -124,18 +124,11 @@
             $birthDay = null;
             $birthDate = null;
         } else {
-            $notice = "Uue kasutaja salvestamisel tekkis tõrge!";
+            $notice .= " Uue kasutaja salvestamisel tekkis tõrge!";
         }
 	}//kui kõik korras
 	
   } //kui on nuppu vajutatud
-  
-  function test_input($data) {
-		$data = trim($data);
-		$data = stripslashes($data);
-		$data = htmlspecialchars($data);
-		return $data;
-	}
 ?>
 
 <!DOCTYPE html>
