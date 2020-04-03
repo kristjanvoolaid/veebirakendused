@@ -36,5 +36,10 @@
 
     <a href="?logout=1"><p>Logi välja!</p></a>
 
+    <a href="school_log.php">Sisesta õppimise logi</a>
+    <br>
+    <br>
+    <a href="readschoollogs.php">Õppimise logid</a>
+
 </body>
 </html>
