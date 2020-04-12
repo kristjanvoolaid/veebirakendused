@@ -30,7 +30,7 @@
 </head>
 <body>
 	<h1>Meie äge koduleht</h1>
-    <p>Tere <?php echo $_SESSION['userFirstName']; ?></p>
+    <p>Tere <?php echo $_SESSION['userFirstName'] . " " . $_SESSION['userLastName']; ?></p>
 	<p>See leht on valminud õppetöö raames!</p>
     <hr>
 
@@ -40,6 +40,13 @@
     <br>
     <br>
     <a href="readschoollogs.php">Õppimise logid</a>
+    <br>
+    <br>
+    <a href="addnews.php">Lisa uudiseid</a>
+    <br>
+    <br>
+    <a href="news.php">Loe uudiseid</a>
+
 
 </body>
 </html>

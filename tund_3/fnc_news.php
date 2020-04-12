@@ -4,13 +4,13 @@
         // Loon andmebaasiühenduse
         $conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
         // Valmistan ette SQL päringu
-        $stmt = $conn->prepare("INSERT INTO vr20_news (userid, title, content) VALUES (?, ?, ?) LIMIT ?");
+        $stmt = $conn->prepare("INSERT INTO vr20_news (userid, title, content) VALUES (?, ?, ?)");
         echo $conn->error;
         // Seon pärginguga tegelikud andmed
-        $userid = 1;
+        $userid = $_SESSION['userid'];
         $limit = 2;
         // i - integer, s - string, d - decimal
-        $stmt->bind_param("iss", $userid, $newsTitle, $newsContent, $limit);
+        $stmt->bind_param("iss", $userid, $newsTitle, $newsContent);
         if($stmt->execute()) {
             $response = 1;                
         } else {
@@ -50,9 +50,10 @@
     function saveSchoolLog($courseType, $activityType, $elapsedTime) {
         $response = null;
         $conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-        $stmt = $conn->prepare("INSERT INTO vr20_study_log (course, activity, time) VALUES (?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO vr20_study_log (course, userid, activity, time) VALUES (?, ?, ?, ?)");
         echo $conn->error;
-        $stmt->bind_param("iid", $courseType, $activityType, $elapsedTime);
+        $userid = $_SESSION['userid'];
+        $stmt->bind_param("iiid", $courseType, $userid, $activityType, $elapsedTime);
         
         if($stmt->execute()) {
             $response = 1;

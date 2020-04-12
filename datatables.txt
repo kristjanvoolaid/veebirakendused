@@ -9,3 +9,6 @@ CREATE TABLE `kristjanvoolaid`.`vr20_users` ( `id` INT(11) NOT NULL AUTO_INCREME
 
 // Andmetabel õppeainete jaoks
 CREATE TABLE `kristjanvoolaid`.`vr20_oppeained`(`id` INT NOT NULL AUTO_INCREMENT, `course` VARCHAR(255) NOT NULL, `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+// Andmetabelile veeru lisamine
+ALTER TABLE `vr20_study_log` ADD `userid` INT(11) NOT NULL AFTER `id`;

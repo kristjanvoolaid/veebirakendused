@@ -4,16 +4,30 @@
     // var_dump($_POST);
     // echo $_POST["newsTitle"];
     // null tähend on tühi väärtus
+    require("fnc_users.php");
+
+    // Sessiooni kasutamine
+    require("classes/session.class.php");
+	SessionManager::sessionStart("vr20", 0, "/~kristjan.voolaid", "tigu.hk.tlu.ee");
+
+    // $newsHtml = readNews();
+
+    // kas on sisseloginud
+    if(!isset($_SESSION["userid"])) {
+        // Jõuga avalehel
+        header("Location: page.php");
+    } 
+
+    // Login välja
+    if(isset($_GET["logout"])) {
+        session_destroy();
+        header("Location: page.php");
+
+    }
+
     $newsTitle = null;
     $newsContent = null;
     $newsError = null;
-
-    function test_input($data) {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
-      }
 
     // Kontrollin kas buttonit on vajutatud
     if(isset($_POST["newsBtn"])) {

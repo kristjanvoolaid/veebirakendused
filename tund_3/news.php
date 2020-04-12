@@ -34,6 +34,5 @@
         <?php echo $newsHtml; ?>
     </div>
     <a href="?logout=1"><p>Logi välja!</p></a>
-
 </body>
 </html>
