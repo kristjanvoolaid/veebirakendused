@@ -1,10 +1,5 @@
 <?php
 
-    // Sessiooni kasutamine
-    // session_start();
-
-    
-
     function signUp($name, $surname, $email, $gender, $birthDate, $password) {
         $notice = null;
         $conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
@@ -42,49 +37,43 @@
 
         $notice = null;
         $conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-        $stmt_password = $conn->prepare("SELECT password FROM vr20_users");
+        $stmt_password = $conn->prepare("SELECT password FROM vr20_users WHERE email=?");
+        $stmt_password->bind_param("s", $email);
         $stmt_password->bind_result($checkPasswordFromDB);
         $stmt_password->execute();
-        $password_check = null; 
-
-        while($stmt_password->fetch()) {
+        $password_check = null;
+        
+        if($stmt_password->fetch()) {
+            $stmt_password->close();
+    
             if(password_verify($password, $checkPasswordFromDB)) {
-                $password_check = 'ok';
-                $stmt_password->close();
-            break;
+                $stmt = $conn->prepare("SELECT password, id, firstname, lastname, email FROM vr20_users WHERE email=?");
+                $stmt->bind_param("s", $email);
+                $stmt->bind_result($passwordFromDB, $idFromDB, $firstnameFromDB, $lastnameFromDB, $emailFromFB);
+                echo $conn->error;
+                $stmt->execute();
+                $stmt->fetch();
+
+                $_SESSION["userid"] = $idFromDB;
+                $_SESSION["userFirstName"] = $firstnameFromDB;
+                $_SESSION["userLastName"] = $lastnameFromDB;
+                $_SESSION["userEmail"] = $emailFromFB;
+
+                $stmt->close();
+                $conn->close();
+                header("Location: home.php");
+                exit();
+
             } else {
-                $password_check = 'not ok';
-                $stmt_password->close();
-            break;
+                $notice = "Vale parool!";
+                $conn->close();
             }
-        }
-
-        if($password_check == 'ok') {
-            $stmt = $conn->prepare("SELECT password, id, firstname, lastname FROM vr20_users");
-            $stmt->bind_result($passwordFromDB, $idFromDB, $firstnameFromDB, $lastnameFromDB);
-            echo $conn->error;
-
-            $stmt->execute();
-            if($stmt->fetch()) {
-                if(password_verify($password, $passwordFromDB)) {
-                    $_SESSION["userid"] = $idFromDB;
-                    $_SESSION["userFirstName"] = $firstnameFromDB;
-                    $_SESSION["userLastName"] = $lastnameFromDB;
-
-                    $stmt->close();
-                    $conn->close();
-                    header("Location: home.php");
-                    exit();
-                } else {
-                    $notice = "Vale parool!";
-                    }
-            } else {
-                    $notice = "Sellist kasutajat ei (" .$email .") ei leitud!";
-                }
         } else {
-            $notice = "Sellise parooliga kasutajat ei ole!";
+            $notice = "Sellist kasutajat ei leitud!";
+            $stmt_password->close();
+            $conn->close();
         }
-
+        
         return $notice;
     }
 

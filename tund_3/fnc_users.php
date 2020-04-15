@@ -1,10 +1,5 @@
 <?php
 
-    // Sessiooni kasutamine
-    // session_start();
-
-    
-
     function signUp($name, $surname, $email, $gender, $birthDate, $password) {
         $notice = null;
         $conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);

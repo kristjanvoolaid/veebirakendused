@@ -1,5 +1,6 @@
 <?php
     require ("../../../../configuration.php");
+    require("fnc_photos.php");
     
     // Sessiooni kasutamine
     require("classes/session.class.php");
@@ -20,6 +21,7 @@
     $originalPhotoDir = "../../uploadOriginalPhoto/";
     $normalPhotoDir = "../../uploadNormalPhoto/";
     $error = null;
+    $result = null;
     $notice = null;
     $imageFileType = null;
     $fileUploadSizeLimit = 1048576;
@@ -29,7 +31,8 @@
     $maxHeight = 400;
 
     if(isset($_POST['photoSubmit'])) {
-
+        // func test
+        $picture_file = $_FILES["fileToUpload"]["tmp_name"];
         // Kas on üldse pilt
         $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
         if($check !== false) {
@@ -70,20 +73,8 @@
                 $myTempImage = imagecreatefrompng($_FILES["fileToUpload"]["tmp_name"]);
             }
 
-            $imageW = imagesx($myTempImage);
-            $imageH = imagesy($myTempImage);
-
-            if($imageW / $maxWidth > $imageH / $maxHeight) {
-                $imageSizeRatio = $imageW / $maxHeight;
-            } else {
-                $imageSizeRatio = $imageH / $maxHeight;
-            }
-
-            $newW = round($imageW / $imageSizeRatio);
-            $newH = round($imageH / $imageSizeRatio);
-            // Loome järgmise uue ajutise objekti
-            $myNewImage = imagecreatetruecolor($newW, $newH);
-            imagecopyresampled($myNewImage, $myTempImage, 0, 0, 0, 0, $newW, $newH, $imageW, $imageH);
+            // Pildi suuruse muutmine
+            $myNewImage = changePhotoSize($myTempImage);
 
             // Salvestame vähendatud kujutise faili
             if($imageFileType == "jpg") {
@@ -102,14 +93,25 @@
                 }
             }
 
+            // Pilti upload ja andmed andmebaasi
+            $userId = $_SESSION['userid'];
+            $origName = $_FILES['fileToUpload']['name'];
+            $altText = $_POST['altText'];
+            $privacy = $_POST['privacy'];
 
             if(move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $originalTarget)) {
-                $notice .= "Pilt laeti ülesse!";
+                $notice .= " Pilt laeti ülesse!"; 
+                $result = photoUpload($userId, $fileName, $origName, $altText, $privacy);
+                if($result == 1) {
+                    $notice .= " Pildi info andmebaasi salvestatud!";
+                } else {
+                    $error .= " Pildi info andmebaasi salvestamisel tekkis tõrge!";
+                }
             } else {
                 $error .= "Pildi ülesse laadimisel tekkis viga!";
             }
 
-            imagedestroy($myTempImage);
+            // imagedestroy($myTempImage);
             imagedestroy($myNewImage);
 
             // Andmebaasi
@@ -117,7 +119,6 @@
         } // Kui vigu pole
         
     }
-    
 ?>
 <!DOCTYPE html>
 <html lang="et">
