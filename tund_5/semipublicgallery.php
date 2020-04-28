@@ -35,7 +35,7 @@
         $page = ceil($picCount / $limit);
     }
 
-    $gallery = $photo->showPublicPictures(2, $page, $limit);
+    $gallery = $photo->showPublicPictures(2);
 ?>
 
 <!DOCTYPE html>
@@ -45,6 +45,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
     <h1>Avalikud pildid</h1>
@@ -61,7 +63,7 @@
 		}
 	?>
 
-    <div>
+    <div class="grid-container">
         <?php echo $gallery; ?>
     </div>
 </body>

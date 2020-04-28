@@ -12,3 +12,9 @@ CREATE TABLE `kristjanvoolaid`.`vr20_oppeained`(`id` INT NOT NULL AUTO_INCREMENT
 
 // Andmetabelile veeru lisamine
 ALTER TABLE `vr20_study_log` ADD `userid` INT(11) NOT NULL AFTER `id`;
+
+// Uuenda tabeli veergusid
+UPDATE `vr20_users` SET `firstname` = 'Kristjan', `lastname` = 'Voolaid' WHERE `vr20_users`.`id` = 4;
+
+// Piltide kuvamine userid järgi
+SELECT vr20_photos.userid, vr20_photos.filename, vr20_photos.alttext, vr20_users.id, vr20_users.firstname, vr20_users.lastname FROM vr20_photos JOIN vr20_users ON vr20_photos.userid = vr20_users.id WHERE vr20_photos.userid = ? LIMIT ?,?;

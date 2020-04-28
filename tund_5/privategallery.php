@@ -27,6 +27,7 @@
     $page = 1;
     $limit = 5;
     $picCount = $photo->countUserPics($_SESSION['userid']);
+    $userid = $_SESSION['userid'];
 
     if(!isset($_GET["page"]) or $_GET["page"] < 1) {
         $page = 1;
@@ -34,7 +35,7 @@
         $page = ceil($picCount / $limit);
     }
 
-    $gallery = $photo->showUserPictures($page, $limit);
+    $gallery = $photo->showUserPictures($userid);
 ?>
 
 <!DOCTYPE html>
@@ -44,6 +45,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Sinu pildid</h1>
@@ -59,7 +61,7 @@
 			echo "<span> Järgmine leht</span>";
 		}
 	?>
-    <div>
+    <div class="grid-container">
         <?php echo $gallery; ?>
     </div>
 </body>

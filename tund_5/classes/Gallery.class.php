@@ -5,18 +5,25 @@
         function __construct() {
         }
 
-        public function showUserPictures($page, $limit) {
-            $userid = $_SESSION['userid'];
+        public function showUserPictures($userid) {
             $response = null;
             $conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-            $stmt = $conn->prepare("SELECT userid, filename, alttext FROM vr20_photos WHERE userid=? LIMIT ?,?");
-            $stmt->bind_param("iii", $userid, $page, $limit);
-            $stmt->bind_result($userid, $fileName, $altText);
+            // $stmt = $conn->prepare("SELECT userid, filename, alttext FROM vr20_photos WHERE userid=? LIMIT ?,?");
+            $stmt = $conn->prepare("SELECT vr20_photos.userid, vr20_photos.filename, vr20_photos.alttext, vr20_users.id, vr20_users.firstname, vr20_users.lastname
+                                    FROM vr20_photos
+                                    JOIN vr20_users 
+                                    ON vr20_photos.userid = vr20_users.id 
+                                    WHERE vr20_photos.userid=?
+                                    LIMIT ?,?");
+            $one = 0;
+            $two = 5;
+            $stmt->bind_param("iii", $userid, $one, $two);
+            $stmt->bind_result($userid, $fileNameFromDB, $altTextFromDB, $idFromDB, $firstNameFromDB, $lastNameFromDB);
             $stmt->execute();
             
             while($stmt->fetch()) {
-                $response .= '<a href="' . $GLOBALS["originalPhotoDir"] . $fileName . '">' . '<img src="' . $GLOBALS["thumbPhotoDir"] . $fileName . '" alt="' . $altText . '">' . "</a> \t";
-                $response .=  '<small>' . $_SESSION['userFirstName'] . " " . $_SESSION['userLastName'] . "</small> \n";   
+                $response .= '<div class="grid-item"><a href="' . $GLOBALS["originalPhotoDir"] . $fileNameFromDB . '">' . '<img src="' . $GLOBALS["thumbPhotoDir"] . $fileNameFromDB . '" alt="' . $altTextFromDB . '">' . "</a> \t";
+                $response .= '<p>' . $firstNameFromDB . " " . $lastNameFromDB . '</p></div>';
             }
 
             if($response == null) {
@@ -28,18 +35,25 @@
             return $response; 
         }
 
-        public function showPublicPictures($privacy, $page, $limit) {
+        public function showPublicPictures($privacy) {
             // $privacy = 2;
             $response = null;
             $conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-            $stmt = $conn->prepare("SELECT userid, filename, alttext FROM vr20_photos WHERE privacy=? LIMIT ?,?");
-            $stmt->bind_param("iii", $privacy, $page, $limit);
-            $stmt->bind_result($userid, $fileName, $altText);
+            $stmt = $conn->prepare("SELECT vr20_photos.userid, vr20_photos.filename, vr20_photos.alttext, vr20_photos.privacy, vr20_users.id, vr20_users.firstname, vr20_users.lastname 
+                                    FROM vr20_photos 
+                                    JOIN vr20_users 
+                                    ON vr20_photos.privacy = ?
+                                    WHERE deleted is null
+                                    LIMIT ?,?");
+            $one = 0;
+            $two = 5;
+            $stmt->bind_param("iii", $privacy, $one, $two);
+            $stmt->bind_result($userid, $fileNameFromDB, $altTextFromDB, $privacyFromDB, $idFromDB, $firstNameFromDB, $lastNameFromDB);
             $stmt->execute();
 
             while($stmt->fetch()) {
-                $response .= '<a href="' . $GLOBALS["originalPhotoDir"] . $fileName . '">' . '<img src="' . $GLOBALS["thumbPhotoDir"] . $fileName . '" alt="' . $altText . '">' . "</a> \n \t";
-                $response .=  '<small>' . $_SESSION['userFirstName'] . " " . $_SESSION['userLastName'] . "</small> \t";
+                $response .= '<div class="grid-item"><a href="' . $GLOBALS["originalPhotoDir"] . $fileNameFromDB . '">' . '<img src="' . $GLOBALS["thumbPhotoDir"] . $fileNameFromDB . '" alt="' . $altTextFromDB . '">' . "</a> \t";
+                $response .= '<p>' . $firstNameFromDB . " " . $lastNameFromDB . '</p></div>';
             }
 
             if($response == null) {
