@@ -16,17 +16,19 @@
     }
     
     // Photos class
-    require("classes/Gallery.class.php");
     require("../../../../configuration.php");
+    require("fnc_gallery.php");
+
+    // Menubar
+    include("menubar.php");
 
     //Piltide väljakutsumine
     $thubnailDir = "../../uploadThumbnailPhoto/";
-    $photo = new Gallery();
-    // $gallery = $photo->showUserPictures();
 
     $page = 1;
     $limit = 5;
-    $picCount = $photo->countUserPics($_SESSION['userid']);
+    $userid = $_SESSION['userid'];
+    $picCount = countPics($userid);
     $userid = $_SESSION['userid'];
 
     if(!isset($_GET["page"]) or $_GET["page"] < 1) {
@@ -35,7 +37,7 @@
         $page = ceil($picCount / $limit);
     }
 
-    $gallery = $photo->showUserPictures($userid);
+    $gallery = showUserPictures($userid, $page, $limit);
 ?>
 
 <!DOCTYPE html>

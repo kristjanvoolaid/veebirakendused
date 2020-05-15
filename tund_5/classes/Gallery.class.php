@@ -1,7 +1,7 @@
 <?php
 
     class Gallery {
-
+        // Klass harjutamiseks
         function __construct() {
         }
 

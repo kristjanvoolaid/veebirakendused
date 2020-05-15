@@ -9,6 +9,9 @@
 
     // $newsHtml = readNews();
 
+    // Menubar
+    include("menubar.php");
+
     // kas on sisseloginud
     if(!isset($_SESSION["userid"])) {
         // Jõuga avalehel

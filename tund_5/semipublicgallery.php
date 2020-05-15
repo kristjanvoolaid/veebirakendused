@@ -16,18 +16,18 @@
     }
     
     // Photos class
-    require("classes/Gallery.class.php");
     require("../../../../configuration.php");
     require("fnc_gallery.php");
 
+    // Menubar
+    include("menubar.php");
+
     //Piltide väljakutsumine
     $thubnailDir = "../../uploadThumbnailPhoto/";
-    $photo = new Gallery();
-    // $gallery = $photo->showPublicPictures();
 
     $page = 1;
     $limit = 5;
-    $picCount = $photo->countPics(2);
+    $picCount = countPics(2);
 
     if(!isset($_GET["page"]) or $_GET["page"] < 1) {
         $page = 1;
@@ -35,7 +35,7 @@
         $page = ceil($picCount / $limit);
     }
 
-    $gallery = $photo->showPublicPictures(2);
+    $gallery = showPublicPictures(2, $page, $limit);
 ?>
 
 <!DOCTYPE html>
@@ -64,7 +64,9 @@
 	?>
 
     <div class="grid-container">
-        <?php echo $gallery; ?>
+        <?php 
+            echo $gallery; 
+        ?>
     </div>
 </body>
 </html>

@@ -13,6 +13,9 @@
 		session_destroy();
 		header("Location: page.php");
 	}
+
+	// Menubar
+    include("menubar.php");
 	
 	require("../../../../configuration.php");
 	require("fnc_photoupload.php");

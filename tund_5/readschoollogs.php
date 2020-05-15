@@ -3,6 +3,9 @@
     require ("fnc_news.php");
     require("fnc_users.php");
 
+    // Menubar
+    include("menubar.php");
+
     // Sessiooni kasutamine
     require("classes/session.class.php");
 	SessionManager::sessionStart("vr20", 0, "/~kristjan.voolaid", "tigu.hk.tlu.ee");
@@ -13,7 +16,13 @@
     if(!isset($_SESSION["userid"])) {
         // Jõuga avalehel
         header("Location: page.php");
-    } 
+    }
+    
+    //login välja
+	if(isset($_GET["logout"])){
+		session_destroy();
+		header("Location: page.php");
+    }
 
     $logsHtml = readSchoolLogs();
 ?>
@@ -47,6 +56,9 @@
 
 </style>
 <body>
+    <br>
+    <br>
+    <br>
     <table>
         <tr>
             <th>Õppeaine</th>
