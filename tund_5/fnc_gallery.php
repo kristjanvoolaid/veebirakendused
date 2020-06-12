@@ -15,7 +15,8 @@
             
         while($stmt->fetch()) {
             $response .= '<div class="grid-item"><a href="' . $GLOBALS["originalPhotoDir"] . $fileNameFromDB . '">' . '<img src="' . $GLOBALS["thumbPhotoDir"] . $fileNameFromDB . '" alt="' . $altTextFromDB . '">' . "</a> \t";
-            $response .= '<p>' . $firstNameFromDB . " " . $lastNameFromDB . '</p></div>';
+            $response .= '<p>' . $firstNameFromDB . " " . $lastNameFromDB . '</p>';
+            $response .= '<p>' . $altTextFromDB . '<p></div>';
         }
 
         if($response == null) {
@@ -42,7 +43,8 @@
 
         while($stmt->fetch()) {
             $response .= '<div class="grid-item"><a href="' . $GLOBALS["originalPhotoDir"] . $fileNameFromDB . '">' . '<img src="' . $GLOBALS["thumbPhotoDir"] . $fileNameFromDB . '" alt="' . $altTextFromDB . '">' . "</a> \t";
-            $response .= '<p>' . $firstNameFromDB . " " . $lastNameFromDB . '</p></div>';
+            $response .= '<p>' . $firstNameFromDB . " " . $lastNameFromDB . '</p>';
+            $response .= '<p>' . $altTextFromDB . '</p></div>';
         }
 
         if($response == null) {
